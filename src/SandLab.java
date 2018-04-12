@@ -7,6 +7,8 @@ public class SandLab
   //add constants for particle types here
   public static final int EMPTY = 0;
   public static final int METAL = 1;
+  public static final int SAND = 2;
+  public static final int WATER = 3;
   
   //do not add any more fields below
   private int[][] grid;
@@ -23,10 +25,12 @@ public class SandLab
     String[] names;
     // Change this value to add more buttons
     //Step 4,6
-    names = new String[2];
+    names = new String[4];	//CHANGE NUMBER THE MORE YOU ADD!!!
     // Each value needs a name for the button
     names[EMPTY] = "Empty";
     names[METAL] = "Metal";
+    names[SAND] = "Sand";
+    names[WATER] = "Water";
     
     //1. Add code to initialize the data member grid with same dimensions
     
@@ -50,13 +54,21 @@ public class SandLab
     {
     		for(int cols = 0; cols < grid[rows].length; cols++)
     		{
-    			if(grid[rows][cols] == 1)
+    			if(grid[rows][cols] == METAL)
     			{
     				display.setColor(rows, cols, Color.GRAY);
     			}
-    			else if(grid[rows][cols] == 0)
+    			else if(grid[rows][cols] == EMPTY)
     			{
     				display.setColor(rows, cols, Color.BLACK);
+    			}
+    			else if(grid[rows][cols] == SAND)
+    			{
+    				display.setColor(rows,  cols, Color.YELLOW);
+    			}
+    			else if(grid[rows][cols] == WATER)
+    			{
+    				display.setColor(rows,  cols, Color.BLUE);
     			}
     			else
     			{
@@ -71,6 +83,58 @@ public class SandLab
   //causes one random particle in grid to maybe do something.
   public void step()
   {
+	  int rowScalar = grid.length - 1;		//-1 so that it doesn't hit the edge of the grid and crash
+	  int colScalar = grid[0].length;
+	  int someRandomRow = (int) (Math.random() * rowScalar);
+	  int someRandomCol = (int) (Math.random() * colScalar);
+	  
+	  if(grid[someRandomRow][someRandomCol] == SAND && grid[someRandomRow + 1][someRandomCol] == EMPTY)
+	  {
+		  grid[someRandomRow][someRandomCol] = EMPTY;	//+1 so it moves DOWN. It moves up if it's -1
+		  grid[someRandomRow + 1][someRandomCol] = SAND;
+		  updateDisplay();
+	  }
+	  
+	  if(grid[someRandomRow][someRandomCol] == WATER && grid[someRandomRow + 1][someRandomCol] == EMPTY)
+	  {
+		  grid[someRandomRow][someRandomCol] = EMPTY;
+		  
+		  int noChange = someRandomCol;
+		  int left = someRandomCol - 1;
+		  int right = someRandomCol + 1;
+		  
+		  int[] directions = {noChange, left, right};
+		  int randomHorizontal = (int)(Math.random() * 3);		//hopefully 2-4
+		  
+		  if(grid[someRandomRow][someRandomCol +1 ] == EMPTY || grid[someRandomRow][someRandomCol - 1] == EMPTY)
+		  {
+			  grid[someRandomRow][directions[randomHorizontal]] = WATER;
+		  }
+	  }
+	  
+//	//Failed WATER movement code  
+//	  for(int index = 0; index < grid.length - someRandomRow; index++)
+//	  {
+//		  int noChange = someRandomCol;
+//		  int left = someRandomCol - 1;
+//		  int right = someRandomCol + 1;
+//		  
+//		  int[] directions = {noChange, left, right};
+//		  int randomHorizontal = (int)(Math.random() * 3);		//hopefully 2-4
+//		  
+//		  if(grid[someRandomRow][someRandomCol] == WATER && grid[someRandomRow + 1][someRandomCol] == EMPTY)
+//		  {
+//			  grid[someRandomRow][someRandomCol] = EMPTY;
+//			  grid[someRandomRow + 1][directions[randomHorizontal]] = WATER;
+//			  updateDisplay();
+//		  }
+//		  if(grid[someRandomRow][someRandomCol] == WATER && grid[someRandomRow + 1][someRandomCol] == WATER)
+//		  {
+//			  grid[someRandomRow + 1][someRandomCol] = WATER;
+//			  updateDisplay();
+//		  }
+//	  }
+	  
     //Remember, you need to access both row and column to specify a spot in the array
     //The scalar refers to how big the value could be
     //int someRandom = (int) (Math.random() * scalar)
