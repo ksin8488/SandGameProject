@@ -92,48 +92,29 @@ public class SandLab
 	  {
 		  grid[someRandomRow][someRandomCol] = EMPTY;	//+1 so it moves DOWN. It moves up if it's -1
 		  grid[someRandomRow + 1][someRandomCol] = SAND;
-		  updateDisplay();
+		  
 	  }
 	  
-	  if(grid[someRandomRow][someRandomCol] == WATER && grid[someRandomRow + 1][someRandomCol] == EMPTY)
+	  if(grid[someRandomRow][someRandomCol] == WATER)
 	  {
-		  grid[someRandomRow][someRandomCol] = EMPTY;
 		  
-		  int noChange = someRandomCol;
-		  int left = someRandomCol - 1;
-		  int right = someRandomCol + 1;
-		  
-		  int[] directions = {noChange, left, right};
-		  int randomHorizontal = (int)(Math.random() * 3);		//hopefully 2-4
-		  
-		  if(grid[someRandomRow][someRandomCol +1 ] == EMPTY || grid[someRandomRow][someRandomCol - 1] == EMPTY)
+
+		  int randomHorizontal = (int)(Math.random() * 3) + -1;	
+		  int randomVertical = (int)(Math.random() * 2);
+		  if(someRandomRow + randomVertical < grid.length && someRandomRow + randomVertical > -1)
 		  {
-			  grid[someRandomRow][directions[randomHorizontal]] = WATER;
+			  if(someRandomCol + randomHorizontal < grid[0].length && someRandomCol + randomHorizontal > -1) 
+			  {
+				  if(grid[someRandomRow + randomVertical][someRandomCol + randomHorizontal] == EMPTY)
+				  {
+					  grid[someRandomRow][someRandomCol] = EMPTY;
+					  grid[someRandomRow + randomVertical][someRandomCol + randomHorizontal] = WATER;
+				  }
+			  }
+			  
 		  }
+
 	  }
-	  
-//	//Failed WATER movement code  
-//	  for(int index = 0; index < grid.length - someRandomRow; index++)
-//	  {
-//		  int noChange = someRandomCol;
-//		  int left = someRandomCol - 1;
-//		  int right = someRandomCol + 1;
-//		  
-//		  int[] directions = {noChange, left, right};
-//		  int randomHorizontal = (int)(Math.random() * 3);		//hopefully 2-4
-//		  
-//		  if(grid[someRandomRow][someRandomCol] == WATER && grid[someRandomRow + 1][someRandomCol] == EMPTY)
-//		  {
-//			  grid[someRandomRow][someRandomCol] = EMPTY;
-//			  grid[someRandomRow + 1][directions[randomHorizontal]] = WATER;
-//			  updateDisplay();
-//		  }
-//		  if(grid[someRandomRow][someRandomCol] == WATER && grid[someRandomRow + 1][someRandomCol] == WATER)
-//		  {
-//			  grid[someRandomRow + 1][someRandomCol] = WATER;
-//			  updateDisplay();
-//		  }
-//	  }
 	  
     //Remember, you need to access both row and column to specify a spot in the array
     //The scalar refers to how big the value could be
