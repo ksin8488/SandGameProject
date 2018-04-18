@@ -9,6 +9,7 @@ public class SandLab
   public static final int METAL = 1;
   public static final int SAND = 2;
   public static final int WATER = 3;
+  public static final int GAS = 4;
   
   //do not add any more fields below
   private int[][] grid;
@@ -25,12 +26,13 @@ public class SandLab
     String[] names;
     // Change this value to add more buttons
     //Step 4,6
-    names = new String[4];	//CHANGE NUMBER THE MORE YOU ADD!!!
+    names = new String[5];	//CHANGE NUMBER THE MORE YOU ADD!!!
     // Each value needs a name for the button
     names[EMPTY] = "Empty";
     names[METAL] = "Metal";
     names[SAND] = "Sand";
     names[WATER] = "Water";
+    names[GAS] = "Gas";
     
     //1. Add code to initialize the data member grid with same dimensions
     
@@ -70,6 +72,10 @@ public class SandLab
     			{
     				display.setColor(rows,  cols, Color.BLUE);
     			}
+    			else if(grid[rows][cols] == GAS)
+    			{
+    				display.setColor(rows,  cols, Color.LIGHT_GRAY);
+    			}
     			else
     			{
     				display.setColor(rows, cols, Color.BLACK);
@@ -83,6 +89,7 @@ public class SandLab
   //causes one random particle in grid to maybe do something.
   public void step()
   {
+	  //SAND section
 	  int rowScalar = grid.length - 1;		//-1 so that it doesn't hit the edge of the grid and crash
 	  int colScalar = grid[0].length;
 	  int someRandomRow = (int) (Math.random() * rowScalar);
@@ -92,12 +99,16 @@ public class SandLab
 	  {
 		  grid[someRandomRow][someRandomCol] = EMPTY;	//+1 so it moves DOWN. It moves up if it's -1
 		  grid[someRandomRow + 1][someRandomCol] = SAND;
-		  
+	  }
+	  else if (grid[someRandomRow][someRandomCol] == SAND && grid[someRandomRow + 1][someRandomCol] == WATER)
+	  {
+		  grid[someRandomRow][someRandomCol] = EMPTY;	//+1 so it moves DOWN. It moves up if it's -1
+		  grid[someRandomRow + 1][someRandomCol] = SAND;
 	  }
 	  
+	  //WATER section
 	  if(grid[someRandomRow][someRandomCol] == WATER)
 	  {
-		  
 
 		  int randomHorizontal = (int)(Math.random() * 3) + -1;	
 		  int randomVertical = (int)(Math.random() * 2);
@@ -111,9 +122,26 @@ public class SandLab
 					  grid[someRandomRow + randomVertical][someRandomCol + randomHorizontal] = WATER;
 				  }
 			  }
-			  
 		  }
+	  }
+	  
+	  //GAS section
+	  if(grid[someRandomRow][someRandomCol] == GAS)
+	  {
 
+		  int randomHorizontal = (int)(Math.random() * 3) + -1;	
+		  int randomVertical = (int)(Math.random() * 2);
+		  if(someRandomRow + randomVertical < grid.length && someRandomRow + randomVertical > -1)
+		  {
+			  if(someRandomCol + randomHorizontal < grid[0].length && someRandomCol + randomHorizontal > -1) 
+			  {
+				  if(grid[someRandomRow + randomVertical][someRandomCol + randomHorizontal] == EMPTY)
+				  {
+					  grid[someRandomRow][someRandomCol] = EMPTY;
+					  grid[someRandomRow + randomVertical][someRandomCol + randomHorizontal] = GAS;
+				  }
+			  }
+		  }
 	  }
 	  
     //Remember, you need to access both row and column to specify a spot in the array
