@@ -130,7 +130,7 @@ public class SandLab
 	  {
 
 		  int randomHorizontal = (int)(Math.random() * 3) + -1;	
-		  int randomVertical = (int)(Math.random() * 2);
+		  int randomVertical = (int)(Math.random() * 2) + -1;
 		  if(someRandomRow + randomVertical < grid.length && someRandomRow + randomVertical > -1)
 		  {
 			  if(someRandomCol + randomHorizontal < grid[0].length && someRandomCol + randomHorizontal > -1) 
