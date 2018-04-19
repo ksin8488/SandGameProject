@@ -10,6 +10,7 @@ public class SandLab
   public static final int SAND = 2;
   public static final int WATER = 3;
   public static final int GAS = 4;
+  public static final int ACID = 5;
   
   //do not add any more fields below
   private int[][] grid;
@@ -26,13 +27,14 @@ public class SandLab
     String[] names;
     // Change this value to add more buttons
     //Step 4,6
-    names = new String[5];	//CHANGE NUMBER THE MORE YOU ADD!!!
+    names = new String[6];	//CHANGE NUMBER THE MORE YOU ADD!!!
     // Each value needs a name for the button
     names[EMPTY] = "Empty";
     names[METAL] = "Metal";
     names[SAND] = "Sand";
     names[WATER] = "Water";
     names[GAS] = "Gas";
+    names[ACID] = "Acid";
     
     //1. Add code to initialize the data member grid with same dimensions
     
@@ -75,6 +77,10 @@ public class SandLab
     			else if(grid[rows][cols] == GAS)
     			{
     				display.setColor(rows,  cols, Color.LIGHT_GRAY);
+    			}
+    			else if(grid[rows][cols] == ACID)
+    			{
+    				display.setColor(rows, cols,  Color.GREEN);
     			}
     			else
     			{
@@ -143,6 +149,49 @@ public class SandLab
 			  }
 		  }
 	  }
+	  
+	  //ACID section
+	  if(grid[someRandomRow][someRandomCol] == ACID)
+	  {
+
+		  int randomHorizontal = (int)(Math.random() * 3) + -1;	
+		  int randomVertical = (int)(Math.random() * 2);
+		  if(someRandomRow + randomVertical < grid.length && someRandomRow + randomVertical > -1)
+		  {
+			  if(someRandomCol + randomHorizontal < grid[0].length && someRandomCol + randomHorizontal > -1) 
+			  {
+				  if(grid[someRandomRow + randomVertical][someRandomCol + randomHorizontal] == EMPTY)
+				  {
+					  grid[someRandomRow][someRandomCol] = EMPTY;
+					  grid[someRandomRow + randomVertical][someRandomCol + randomHorizontal] = ACID;
+				  }
+				  else if (grid[someRandomRow][someRandomCol] == ACID && 
+						  
+						  (grid[someRandomRow + 1][someRandomCol] != EMPTY && grid[someRandomRow + 1][someRandomCol] != ACID))
+				  {
+					  grid[someRandomRow][someRandomCol] = EMPTY;
+					  grid[someRandomRow + 1][someRandomCol] = ACID;
+				  }
+			  }
+			  
+			  //checks if anything is touching the acid
+			  for(int index = 0; index < 6; index++)	//number of Things in the names list that holds all the button names
+			  {
+				  if(someRandomRow + randomVertical < grid.length && someRandomRow + randomVertical > -1)
+				  {
+					  if(someRandomCol + randomHorizontal < grid[0].length && someRandomCol + randomHorizontal > -1) 
+					  {
+						  if(grid[someRandomRow + randomVertical][someRandomCol + randomHorizontal] == index)
+						  {
+							  grid[someRandomRow][someRandomCol] = EMPTY;
+							  grid[someRandomRow + randomVertical][someRandomCol + randomHorizontal] = ACID;
+						  }
+					  }
+				  }
+			  }
+		  }
+	  }
+	
 	  
     //Remember, you need to access both row and column to specify a spot in the array
     //The scalar refers to how big the value could be
